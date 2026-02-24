@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Hormozi Value Equation — $100M Offers Grand Slam Framework">
+<meta name="theme-color" content="#0C0B09">
+<title>A Equação do Valor — $100M Offers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: #0C0B09;
+  color: #D4C9B8;
+  font-family: 'IBM Plex Mono', monospace;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Film grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  animation: grain 0.5s steps(1) infinite;
+  opacity: 0.6;
+}
+
+@keyframes grain {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-1%, -1%); }
+  20% { transform: translate(1%, 0%); }
+  30% { transform: translate(-1%, 1%); }
+  40% { transform: translate(1%, -1%); }
+  50% { transform: translate(-1%, 0%); }
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 24px;
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.container.ready {
+  opacity: 1;
+}
+
+/* Range slider thumb */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #D4C9B8;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: #fff;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #D4C9B8;
+  cursor: pointer;
+  border: none;
+  border-radius: 0;
+}
+
+input[type="range"]::-moz-range-track {
+  height: 2px;
+  border: none;
+}
+
+/* Typography classes */
+.font-elite {
+  font-family: 'Special Elite', cursive;
+}
+
+.top-mark {
+  font-size: 9px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: rgba(180, 170, 150, 0.25);
+  margin-bottom: 48px;
+  border-bottom: 1px solid rgba(180, 170, 150, 0.08);
+  padding-bottom: 16px;
+}
+
+/* Formula box */
+.formula-box {
+  border: 1px solid rgba(180, 170, 150, 0.1);
+  padding: 32px 24px;
+  margin-bottom: 48px;
+  position: relative;
+  background: rgba(180, 170, 150, 0.015);
+}
+
+.corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+}
+
+.corner--tl { top: -1px; left: -1px; border-top: 2px solid #C8963E; border-left: 2px solid #C8963E; }
+.corner--tr { top: -1px; right: -1px; border-top: 2px solid #C8963E; border-right: 2px solid #C8963E; }
+.corner--bl { bottom: -1px; left: -1px; border-bottom: 2px solid #C8963E; border-left: 2px solid #C8963E; }
+.corner--br { bottom: -1px; right: -1px; border-bottom: 2px solid #C8963E; border-right: 2px solid #C8963E; }
+
+.formula-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(12px, 4vw, 32px);
+  flex-wrap: wrap;
+}
+
+.formula-item {
+  text-align: center;
+}
+
+.formula-item__label {
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: rgba(180, 170, 150, 0.3);
+  margin-bottom: 4px;
+}
+
+.formula-item__value {
+  font-family: 'Special Elite', cursive;
+  font-size: 44px;
+  line-height: 1;
+}
+
+.formula-item__hint {
+  font-size: 10px;
+  opacity: 0.5;
+  margin-top: 2px;
+}
+
+.formula-times {
+  font-family: 'Special Elite', cursive;
+  font-size: 28px;
+  color: rgba(180, 170, 150, 0.15);
+}
+
+.formula-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(180, 170, 150, 0.2);
+  margin: 4px 0;
+}
+
+.result-zone {
+  text-align: center;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(180, 170, 150, 0.06);
+}
+
+.result-label {
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: rgba(180, 170, 150, 0.25);
+  margin-bottom: 10px;
+}
+
+.result-value {
+  font-family: 'Special Elite', cursive;
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  transition: color 0.4s ease;
+}
+
+/* Meter */
+.meter-label {
+  font-family: 'Special Elite', cursive;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: color 0.4s ease;
+}
+
+.meter-track {
+  width: 100%;
+  height: 3px;
+  background: rgba(180, 170, 150, 0.1);
+  margin-top: 8px;
+}
+
+.meter-fill {
+  height: 100%;
+  transition: all 0.5s ease;
+}
+
+/* Slider items */
+.slider-item {
+  border-bottom: 1px solid rgba(180, 170, 150, 0.08);
+  padding: 20px 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.slider-info {
+  flex: 1;
+}
+
+.slider-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.slider-icon {
+  font-family: 'Special Elite', cursive;
+  font-size: 14px;
+}
+
+.slider-label {
+  font-family: 'Special Elite', cursive;
+  font-size: 17px;
+  color: #D4C9B8;
+  letter-spacing: 1px;
+}
+
+.slider-desc {
+  font-size: 12px;
+  color: rgba(180, 170, 150, 0.4);
+  margin-left: 24px;
+}
+
+.slider-num {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  min-width: 50px;
+  text-align: right;
+}
+
+.slider-track-wrap {
+  margin-top: 16px;
+  margin-left: 24px;
+}
+
+.slider-extremes {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: rgba(180, 170, 150, 0.2);
+  text-transform: uppercase;
+}
+
+.slider-tags {
+  margin-top: 14px;
+  margin-left: 24px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.slider-tag {
+  font-size: 10px;
+  padding: 3px 10px;
+  letter-spacing: 0.5px;
+}
+
+.section-label {
+  font-size: 9px;
+  letter-spacing: 5px;
+  color: rgba(180, 170, 150, 0.2);
+  text-transform: uppercase;
+}
+
+.explanation {
+  margin-bottom: 40px;
+  padding: 0 4px;
+}
+
+.explanation__title {
+  font-family: 'Special Elite', cursive;
+  font-size: 15px;
+  color: #C8963E;
+  margin-bottom: 12px;
+}
+
+.explanation__text {
+  font-size: 13px;
+  color: rgba(180, 170, 150, 0.5);
+  line-height: 1.8;
+}
+
+.explanation__text .hl {
+  color: #D4C9B8;
+}
+
+blockquote {
+  font-family: 'Special Elite', cursive;
+  font-size: 16px;
+  color: rgba(180, 170, 150, 0.35);
+  line-height: 1.7;
+  margin: 0;
+  font-style: normal;
+  border-left: 2px solid rgba(180, 170, 150, 0.1);
+  padding-left: 20px;
+}
+
+.quote-author {
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: rgba(180, 170, 150, 0.15);
+  margin-top: 12px;
+  padding-left: 22px;
+}
+
+.footer {
+  margin-top: 48px;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: rgba(180, 170, 150, 0.12);
+}
+
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<div class="container" id="app">
+
+  <!-- Top mark -->
+  <div class="top-mark">HORMOZI · $100M OFFERS · A EQUAÇÃO DO VALOR</div>
+
+  <!-- Title -->
+  <div style="margin-bottom:48px">
+    <h1 class="font-elite" style="font-size:clamp(36px,7vw,56px);font-weight:400;line-height:1.1;color:#D4C9B8">
+      A Equação<br><span style="color:#C8963E">do Valor.</span>
+    </h1>
+    <p style="font-size:13px;color:rgba(180,170,150,0.4);margin-top:16px;line-height:1.7;max-width:480px">
+      Aumenta o de cima. Diminui o de baixo.
+      É assim que se cria uma oferta que o cliente
+      se sente burro de recusar.
+    </p>
+  </div>
+
+  <!-- Formula box -->
+  <div class="formula-box">
+    <div class="corner corner--tl"></div>
+    <div class="corner corner--tr"></div>
+    <div class="corner corner--bl"></div>
+    <div class="corner corner--br"></div>
+
+    <!-- Numerator -->
+    <div class="formula-row" style="padding-bottom:20px">
+      <div class="formula-item">
+        <div class="formula-item__label">RESULTADO</div>
+        <div class="formula-item__value" id="f-dream" style="color:#C8963E">5</div>
+        <div class="formula-item__hint" style="color:#C8963E">Quão grande é?</div>
+      </div>
+      <span class="formula-times">×</span>
+      <div class="formula-item">
+        <div class="formula-item__label">CONFIANÇA</div>
+        <div class="formula-item__value" id="f-likelihood" style="color:#7A8B6E">5</div>
+        <div class="formula-item__hint" style="color:#7A8B6E">Ele acredita?</div>
+      </div>
+    </div>
+
+    <div class="formula-divider"></div>
+
+    <!-- Denominator -->
+    <div class="formula-row" style="padding-top:20px">
+      <div class="formula-item">
+        <div class="formula-item__label">TEMPO</div>
+        <div class="formula-item__value" id="f-time" style="color:#8B3A3A">5</div>
+        <div class="formula-item__hint" style="color:#8B3A3A">Quanto demora?</div>
+      </div>
+      <span class="formula-times">×</span>
+      <div class="formula-item">
+        <div class="formula-item__label">ESFORÇO</div>
+        <div class="formula-item__value" id="f-effort" style="color:#6B4C35">5</div>
+        <div class="formula-item__hint" style="color:#6B4C35">Quanto custa ralar?</div>
+      </div>
+    </div>
+
+    <!-- Result -->
+    <div class="result-zone">
+      <div class="result-label">VALOR PERCEBIDO</div>
+      <div class="result-value" id="result-val">1.0</div>
+      <div style="margin-top:16px">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px">
+          <span class="meter-label" id="meter-label">MEDIANO — INVISÍVEL NO MERCADO</span>
+        </div>
+        <div class="meter-track">
+          <div class="meter-fill" id="meter-fill" style="width:25%;background:#C8963E"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Explanation -->
+  <div class="explanation">
+    <div class="explanation__title">A regra é simples:</div>
+    <p class="explanation__text">
+      O numerador é o que o cliente <span class="hl">quer</span>.
+      O denominador é o que ele <span class="hl">paga</span> — não em dinheiro, mas em tempo e sofrimento.
+      Sua oferta é imbatível quando o resultado é enorme, a confiança é total,
+      o tempo é curto e o esforço é zero.
+    </p>
+  </div>
+
+  <!-- Maximize section -->
+  <div class="section-label" style="margin-bottom:8px">▲ Maximizar</div>
+
+  <!-- Dream slider -->
+  <div class="slider-item" id="slider-dream">
+    <div class="slider-header">
+      <div class="slider-info">
+        <div class="slider-title-row">
+          <span class="slider-icon" style="color:#C8963E">⚔</span>
+          <span class="slider-label">Resultado dos Sonhos</span>
+        </div>
+        <div class="slider-desc">O resultado final que seu cliente fantasia às 2h da manhã</div>
+      </div>
+      <div class="slider-num" style="color:#C8963E" id="v-dream">5</div>
+    </div>
+    <div class="slider-track-wrap">
+      <input type="range" min="1" max="10" value="5" data-key="dream"
+        style="background:linear-gradient(90deg,#C8963E 50%,rgba(180,170,150,0.08) 50%)">
+      <div class="slider-extremes"><span>baixo</span><span>alto</span></div>
+    </div>
+    <div class="slider-tags" id="tags-dream" style="display:none">
+      <span class="slider-tag" style="border:1px solid rgba(200,150,62,0.19);color:#C8963E">Transformação real</span>
+      <span class="slider-tag" style="border:1px solid rgba(200,150,62,0.19);color:#C8963E">ROI absurdo</span>
+      <span class="slider-tag" style="border:1px solid rgba(200,150,62,0.19);color:#C8963E">Status & poder</span>
+    </div>
+  </div>
+
+  <!-- Likelihood slider -->
+  <div class="slider-item" id="slider-likelihood">
+    <div class="slider-header">
+      <div class="slider-info">
+        <div class="slider-title-row">
+          <span class="slider-icon" style="color:#7A8B6E">◆</span>
+          <span class="slider-label">Chance de Dar Certo</span>
+        </div>
+        <div class="slider-desc">A sensação visceral de que isso vai funcionar pra ele</div>
+      </div>
+      <div class="slider-num" style="color:#7A8B6E" id="v-likelihood">5</div>
+    </div>
+    <div class="slider-track-wrap">
+      <input type="range" min="1" max="10" value="5" data-key="likelihood"
+        style="background:linear-gradient(90deg,#7A8B6E 50%,rgba(180,170,150,0.08) 50%)">
+      <div class="slider-extremes"><span>baixo</span><span>alto</span></div>
+    </div>
+    <div class="slider-tags" id="tags-likelihood" style="display:none">
+      <span class="slider-tag" style="border:1px solid rgba(122,139,110,0.19);color:#7A8B6E">Provas & casos reais</span>
+      <span class="slider-tag" style="border:1px solid rgba(122,139,110,0.19);color:#7A8B6E">Garantias</span>
+      <span class="slider-tag" style="border:1px solid rgba(122,139,110,0.19);color:#7A8B6E">Histórico brutal</span>
+    </div>
+  </div>
+
+  <!-- Minimize section -->
+  <div class="section-label" style="margin-top:32px;margin-bottom:8px">▼ Minimizar</div>
+
+  <!-- Time slider -->
+  <div class="slider-item" id="slider-time">
+    <div class="slider-header">
+      <div class="slider-info">
+        <div class="slider-title-row">
+          <span class="slider-icon" style="color:#8B3A3A">◷</span>
+          <span class="slider-label">Tempo de Espera</span>
+        </div>
+        <div class="slider-desc">Quanto tempo ele espera até ver o primeiro resultado real</div>
+      </div>
+      <div class="slider-num" style="color:#8B3A3A" id="v-time">5</div>
+    </div>
+    <div class="slider-track-wrap">
+      <input type="range" min="1" max="10" value="5" data-key="time"
+        style="background:linear-gradient(90deg,#8B3A3A 50%,rgba(180,170,150,0.08) 50%)">
+      <div class="slider-extremes"><span>rápido / fácil</span><span>lento / difícil</span></div>
+    </div>
+    <div class="slider-tags" id="tags-time" style="display:none">
+      <span class="slider-tag" style="border:1px solid rgba(139,58,58,0.19);color:#8B3A3A">Velocidade de entrega</span>
+      <span class="slider-tag" style="border:1px solid rgba(139,58,58,0.19);color:#8B3A3A">Vitórias rápidas</span>
+      <span class="slider-tag" style="border:1px solid rgba(139,58,58,0.19);color:#8B3A3A">Feedback imediato</span>
+    </div>
+  </div>
+
+  <!-- Effort slider -->
+  <div class="slider-item" id="slider-effort">
+    <div class="slider-header">
+      <div class="slider-info">
+        <div class="slider-title-row">
+          <span class="slider-icon" style="color:#6B4C35">▪</span>
+          <span class="slider-label">Esforço & Sacrifício</span>
+        </div>
+        <div class="slider-desc">O que ele tem que abrir mão ou ralar pra conseguir</div>
+      </div>
+      <div class="slider-num" style="color:#6B4C35" id="v-effort">5</div>
+    </div>
+    <div class="slider-track-wrap">
+      <input type="range" min="1" max="10" value="5" data-key="effort"
+        style="background:linear-gradient(90deg,#6B4C35 50%,rgba(180,170,150,0.08) 50%)">
+      <div class="slider-extremes"><span>rápido / fácil</span><span>lento / difícil</span></div>
+    </div>
+    <div class="slider-tags" id="tags-effort" style="display:none">
+      <span class="slider-tag" style="border:1px solid rgba(107,76,53,0.19);color:#6B4C35">Feito pra você</span>
+      <span class="slider-tag" style="border:1px solid rgba(107,76,53,0.19);color:#6B4C35">Processo simples</span>
+      <span class="slider-tag" style="border:1px solid rgba(107,76,53,0.19);color:#6B4C35">Zero atrito</span>
+    </div>
+  </div>
+
+  <!-- Bottom quote -->
+  <div style="margin-top:64px;padding-top:32px;border-top:1px solid rgba(180,170,150,0.06)">
+    <blockquote>
+      "Faça uma oferta tão boa que a pessoa se sinta idiota dizendo não."
+    </blockquote>
+    <div class="quote-author">— ALEX HORMOZI</div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">$100M OFFERS · GRAND SLAM OFFER FRAMEWORK</div>
+
+</div>
+
+<script>
+var COLORS = {
+  dream: '#C8963E',
+  likelihood: '#7A8B6E',
+  time: '#8B3A3A',
+  effort: '#6B4C35'
+};
+
+var values = { dream: 5, likelihood: 5, time: 5, effort: 5 };
+var expandedKey = null;
+
+function getLabel(v) {
+  if (v < 15) return 'COMMODITY — DESCARTÁVEL';
+  if (v < 30) return 'FRACO — VAI PERDER PRA CONCORRÊNCIA';
+  if (v < 50) return 'MEDIANO — INVISÍVEL NO MERCADO';
+  if (v < 70) return 'FORTE — COMEÇA A DOMINAR';
+  if (v < 85) return 'PREMIUM — DIFÍCIL DE RECUSAR';
+  return 'GRAND SLAM — IMPOSSÍVEL DIZER NÃO';
+}
+
+function getColor(v) {
+  if (v < 30) return '#8B3A3A';
+  if (v < 60) return '#C8963E';
+  return '#7A8B6E';
+}
+
+function update() {
+  var num = values.dream * values.likelihood;
+  var den = values.time * values.effort;
+  var raw = den > 0 ? num / den : 0;
+  var norm = Math.min((raw / 10) * 100, 100);
+
+  // Formula display
+  document.getElementById('f-dream').textContent = values.dream;
+  document.getElementById('f-likelihood').textContent = values.likelihood;
+  document.getElementById('f-time').textContent = values.time;
+  document.getElementById('f-effort').textContent = values.effort;
+
+  // Slider numbers
+  document.getElementById('v-dream').textContent = values.dream;
+  document.getElementById('v-likelihood').textContent = values.likelihood;
+  document.getElementById('v-time').textContent = values.time;
+  document.getElementById('v-effort').textContent = values.effort;
+
+  // Result
+  var rc = getColor(norm);
+  document.getElementById('result-val').textContent = raw.toFixed(1);
+  document.getElementById('result-val').style.color = rc;
+
+  // Meter
+  document.getElementById('meter-label').textContent = getLabel(norm);
+  document.getElementById('meter-label').style.color = rc;
+  document.getElementById('meter-fill').style.width = norm + '%';
+  document.getElementById('meter-fill').style.background = rc;
+}
+
+function toggleExpand(key) {
+  var prev = expandedKey;
+  expandedKey = expandedKey === key ? null : key;
+
+  if (prev) {
+    document.getElementById('tags-' + prev).style.display = 'none';
+  }
+  if (expandedKey) {
+    document.getElementById('tags-' + expandedKey).style.display = 'flex';
+  }
+}
+
+// Slider input handlers
+document.querySelectorAll('input[type="range"]').forEach(function(sl) {
+  sl.addEventListener('input', function(e) {
+    var key = this.dataset.key;
+    var val = parseInt(this.value);
+    values[key] = val;
+    var pct = (val / 10) * 100;
+    this.style.background = 'linear-gradient(90deg, ' + COLORS[key] + ' ' + pct + '%, rgba(180,170,150,0.08) ' + pct + '%)';
+    update();
+  });
+
+  // Prevent click-to-expand when interacting with slider
+  sl.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+
+// Click-to-expand on slider items
+document.querySelectorAll('.slider-item').forEach(function(item) {
+  item.addEventListener('click', function() {
+    var key = this.id.replace('slider-', '');
+    toggleExpand(key);
+  });
+});
+
+// Init
+setTimeout(function() {
+  document.getElementById('app').classList.add('ready');
+}, 100);
+
+update();
+</script>
+</body>
+</html>
