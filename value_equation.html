@@ -362,6 +362,17 @@ blockquote {
   color: rgba(180, 170, 150, 0.12);
 }
 
+.scrub-num {
+  cursor: ns-resize;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+  transition: opacity 0.15s;
+}
+.scrub-num.scrubbing {
+  opacity: 0.45;
+}
+
 </style>
 </head>
 <body>
@@ -664,6 +675,64 @@ setTimeout(function() {
 }, 100);
 
 update();
+
+// Scrub-to-adjust: drag a number up/down to change its value
+function makeScrubNum(el, key) {
+  var startY, startVal, moved;
+
+  el.addEventListener('pointerdown', function(e) {
+    e.preventDefault();
+    startY = e.clientY;
+    startVal = values[key];
+    moved = false;
+    el.setPointerCapture(e.pointerId);
+    el.classList.add('scrubbing');
+  });
+
+  el.addEventListener('pointermove', function(e) {
+    if (!el.hasPointerCapture(e.pointerId)) return;
+    var dy = startY - e.clientY;
+    if (Math.abs(dy) >= 3) moved = true;
+    if (!moved) return;
+    var newVal = Math.max(1, Math.min(10, startVal + Math.round(dy / 14)));
+    if (newVal === values[key]) return;
+    values[key] = newVal;
+    var inp = document.querySelector('input[data-key="' + key + '"]');
+    if (inp) {
+      inp.value = newVal;
+      var pct = (newVal / 10) * 100;
+      inp.style.background = 'linear-gradient(90deg,' + COLORS[key] + ' ' + pct + '%,rgba(180,170,150,0.08) ' + pct + '%)';
+    }
+    update();
+  });
+
+  el.addEventListener('pointerup', function(e) {
+    el.classList.remove('scrubbing');
+    el.releasePointerCapture(e.pointerId);
+    if (moved) {
+      el.addEventListener('click', function stop(ev) {
+        ev.stopPropagation();
+        el.removeEventListener('click', stop);
+      });
+    }
+    moved = false;
+  });
+
+  el.addEventListener('pointercancel', function(e) {
+    el.classList.remove('scrubbing');
+    el.releasePointerCapture(e.pointerId);
+    moved = false;
+  });
+}
+
+['dream', 'likelihood', 'time', 'effort'].forEach(function(key) {
+  ['f-' + key, 'v-' + key].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.classList.add('scrub-num');
+    makeScrubNum(el, key);
+  });
+});
 
 // Service Worker registration
 if ('serviceWorker' in navigator) {
